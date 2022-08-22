@@ -1,4 +1,11 @@
-import { Button, ToggleSwitch, TextInput, Label, Card } from "flowbite-react";
+import {
+  Button,
+  ToggleSwitch,
+  TextInput,
+  Label,
+  Card,
+  Alert,
+} from "flowbite-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -13,6 +20,13 @@ const Home: NextPage = () => {
   const [symbols, setSymbols] = useState(false);
   const [similarCharacters, setSimilarCharacters] = useState(false);
   const [passwordLength, setPasswordLength] = useState(10);
+  const [hasCopied, setHasCopied] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setHasCopied(false);
+    }, 2000);
+  }, [hasCopied]);
 
   useEffect(() => {
     setPw(
@@ -38,7 +52,7 @@ const Home: NextPage = () => {
         <div className="w-full max-w-sm">
           <Card>
             <div className="mb-3">
-              <TextInput type="text" value={pw} onChange={()=>{}}/>
+              <TextInput type="text" value={pw} onChange={() => {}} />
             </div>
             <div className="mb-3">
               <Label
@@ -90,11 +104,16 @@ const Home: NextPage = () => {
               />
             </div>
             <div>
-              <CopyToClipboard text={pw}>
+              <CopyToClipboard text={pw} onCopy={() => setHasCopied(true)}>
                 <Button>Copy password</Button>
               </CopyToClipboard>
             </div>
           </Card>
+          <div className={`mt-5 ${hasCopied ? "opacity-100" : "opacity-0"}`}>
+            <Alert color="success">
+              <span>Copied to clipboard!</span>
+            </Alert>
+          </div>
         </div>
       </div>
     </div>
